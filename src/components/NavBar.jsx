@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import "boxicons";
 import { useState } from "react";
+import logo from "src/assets/img/logo.svg";
 
 export function ButtonDemo({ name, className }) {
   return <Button className={className}>{name}</Button>;
@@ -20,7 +21,7 @@ function NavBar() {
   return (
     <nav className="sticky top-0 flex flex-row items-center justify-between bg-[#FEF9D9] border-b border-x border-[#D2E0FB] shadow-sm px-8 md:px-14 py-4 w-full z-50 mx-2">
       {/* Logo */}
-      <img src="src\assets\img\logo.svg" alt="PageLogo" className="w-10" />
+      <img src={logo} alt="PageLogo" className="w-10" />
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex flex-row gap-4">
