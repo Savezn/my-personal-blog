@@ -1,5 +1,3 @@
-import ManWithCat from "src/assets/img/a-man-with-cat.jpg"
-
 function HeroSection() {
   return (
     <section className="flex flex-col md:flex-row items-center justify-center gap-2 space-y-8 md:space-y-0 md:space-x-8 w-full px-4 md:px-14 py-10">
@@ -18,7 +16,7 @@ function HeroSection() {
       {/* Image Section */}
       <article className="w-80 max-w-full h-100 overflow-hidden p-2">
         <img
-          src={ManWithCat}
+          src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
           alt="Author"
           className="object-cover object-center w-full h-full"
         />
