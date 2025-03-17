@@ -16,7 +16,7 @@ function HeroSection() {
       {/* Image Section */}
       <article className="w-80 max-w-full h-100 overflow-hidden p-2">
         <img
-          src="src\assets\img\a-man-with-cat.jpg"
+          src="https://res.cloudinary.com/dcbpjtd1r/image/upload/v1728449784/my-blog-post/xgfy0xnvyemkklcqodkg.jpg"
           alt="Author"
           className="object-cover object-center w-full h-full"
         />
