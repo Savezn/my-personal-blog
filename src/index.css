@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+.exceeds-2-lines {
+  display: -webkit-box;          /* ตั้งค่า display เป็นแบบ WebKit box สำหรับรองรับ -webkit-line-clamp */
+  -webkit-box-orient: vertical;  /* กำหนดทิศทางของ box เป็นแนวตั้ง */
+  -webkit-line-clamp: 2;         /* จำกัดบรรทัดด้วย WebKit property */
+  line-clamp: 2;                 /* ระบุ standard property (สำหรับอนาคตเมื่อรองรับมากขึ้น) */
+  overflow: hidden;             /* ซ่อนข้อความที่เกิน */
+}

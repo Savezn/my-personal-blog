@@ -1,8 +1,9 @@
 import "./App.css";
+import "./index.css";
 import NavBar from "./components/navbar";
 import HeroSection from "./components/HeroSection";
 import Footer from "./components/Footer";
-import ArticleSection from "./components/ArticleSection";
+import { ArticleSection } from "./components/ArticleSection";
 
 function App() {
   return (
