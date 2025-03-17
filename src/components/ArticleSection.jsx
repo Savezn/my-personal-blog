@@ -2,20 +2,6 @@
 
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandList,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/command";
-import { Button } from "@/components/ui/button";
-import { ChevronsUpDown, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { blogPosts } from "@/data/blogPosts.js";
 import BlogCard from "./BlogCard";
 
@@ -52,10 +38,7 @@ export function ArticleSection() {
 
         {/* Mobile Category List */}
         <div className="relative md:hidden w-full h-12 px-4">
-          <CategoryFilterCombobox
-            value={selectedTab}
-            onChange={setSelectedTab}
-          />
+          
         </div>
       </div>
 
@@ -85,53 +68,6 @@ export function CategoryFilterTabs({ setTab }) {
         ))}
       </TabsList>
     </Tabs>
-  );
-}
-
-export function CategoryFilterCombobox({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="text-[#8EACCD] bg-[#FEF9D9] w-full px-4 py-6 rounded-full border border-[#8EACCD]"
-        >
-          {categories.find((c) => c.value === value)?.label ||
-            "Select category"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-full p-0 text-[#8EACCD] bg-[#FEF9D9] border border-[#8EACCD]">
-        <Command>
-          <CommandList>
-            <CommandGroup>
-              {categories.map((category) => (
-                <CommandItem
-                  key={category.value}
-                  value={category.value}
-                  onSelect={() => {
-                    onChange(category.value);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === category.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {category.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
   );
 }
 
