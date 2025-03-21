@@ -15,6 +15,10 @@ const categories = [
 export function ArticleSection() {
   const [selectedTab, setSelectedTab] = useState("Highlight");
 
+  const handleTabClick = (tab) => {
+    setSelectedTab(tab);
+  };
+  
   return (
     <section className="flex flex-col gap-4 md:gap-6 w-full md:px-14 py-5">
       <h2 className="text-2xl font-bold pl-4">Lastest articles</h2>
@@ -24,21 +28,21 @@ export function ArticleSection() {
           <input
             type="text"
             placeholder="Search"
-            className="placeholder-[#8EACCD] pl-5 bg-[#FEF9D9] w-full h-12 md:h-10 rounded-full px-10 py-3 pr-12 focus:outline-none"
+            className="placeholder-[#8EACCD] pl-5 bg-[#FEF9D9] w-full h-12 md:h-10 rounded-2xl px-10 py-3 pr-12 focus:outline-none"
           />
-          <div className="absolute right-8 top-1/2 transform -translate-y-1/2">
+          <div className="absolute right-8 top-1/2 transform -translate-y-1/3">
             <box-icon name="search-alt-2" color="#8EACCD"></box-icon>
           </div>
         </div>
 
         {/* Desktop Category List */}
         <div className="hidden md:flex flex-row items-center px-2 gap-10 w-4/10 h-12">
-          <CategoryFilterTabs setTab={setSelectedTab} />
+          <CategoryFilterTabs setTab={handleTabClick} />
         </div>
 
         {/* Mobile Category List */}
-        <div className="relative md:hidden w-full h-12 px-4">
-          
+        <div className="bg-[#DEE5D4] md:hidden w-full h-12 px-4">
+          <CategoryFilterSelect setTab={handleTabClick} />
         </div>
       </div>
 
@@ -70,6 +74,25 @@ export function CategoryFilterTabs({ setTab }) {
     </Tabs>
   );
 }
+
+export function CategoryFilterSelect({ setTab }) {
+  const e = (e) => {
+    setTab(e.target.value);
+  }
+  
+  return (
+    <select
+      onChange={e}
+      className="bg-[#FEF9D9] rounded-2xl w-full h-12 px-5 focus:outline-none appearance-none cursor-pointer text-[#8EACCD]"
+    >
+      {categories.map((category) => (
+        <option key={category.value} value={category.value}>
+          {category.label}
+        </option>
+      ))}
+    </select>
+    )
+  };
 
 export function BlogCardArticle({ activeTab, ...props }) {
   return (
