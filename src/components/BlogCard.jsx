@@ -45,7 +45,7 @@ const styles = {
 function BlogCard({ image, category, title, description, author, date }) {
   return (
     <div
-      className={`flex flex-col gap-4 md:gap-6 rounded-xl w-full bg-[#d4dbc9] shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-4 py-6 md:px-10 md:py-6 hover:cursor-pointer`}
+      className={`flex flex-col gap-4 md:gap-6 rounded-xl w-full bg-[#c0c3bd] shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-4 py-6 md:px-10 md:py-6 hover:cursor-pointer`}
     >
       <a href="#" className={`relative h-[212px] sm:h-[360px]`}>
         <img
@@ -56,7 +56,7 @@ function BlogCard({ image, category, title, description, author, date }) {
       </a>
       <div className="flex flex-col">
         <div className="flex">
-          <span className={`${styles.bgAccent4} ${styles.textAccent} rounded-full px-3 py-1 text-sm font-semibold text-green-600 mb-2`}>
+          <span className={`${styles.bgSecondary} ${styles["text-200"]} rounded-full px-3 py-1 text-sm font-semibold shadow shadow:md mb-2`}>
             {category}
           </span>
         </div>
