@@ -94,13 +94,13 @@ function NavBar() {
           <li>
             <ButtonOutline
               name="Log in"
-              className={`text-lg ${styles.textPrimary} border ${styles.borderPrimary} rounded-3xl w-full h-13 hover:cursor-pointer hover:shadow-sm hover:shadow-blue-200 hover:-translate-y-0.5 transition-transform duration-300`}
+              className={`text-lg ${styles.textPrimary} border ${styles.borderPrimary} rounded-3xl w-full h-13 hover:cursor-pointer hover:scale-101 hover:shadow-sm hover:shadow-blue-200 hover:-translate-y-0.5 transition-transform duration-300`}
             />
           </li>
           <li>
             <ButtonDemo
               name="Sign up"
-              className={`text-lg ${styles.textBackground} ${styles.bgPrimary} border ${styles.borderPrimary} rounded-3xl w-full h-13 hover:cursor-pointer hover:shadow-sm hover:shadow-blue-200 hover:-translate-y-0.5 transition-transform duration-300`}
+              className={`text-lg ${styles.textBackground} ${styles.bgPrimary} border ${styles.borderPrimary} rounded-3xl w-full h-13 hover:cursor-pointer hover:scale-101 hover:shadow-sm hover:shadow-blue-200 hover:-translate-y-0.5 transition-transform duration-300`}
             />
           </li>
         </ul>
