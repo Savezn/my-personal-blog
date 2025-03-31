@@ -71,7 +71,7 @@ export function ArticleSection() {
         className={`flex flex-col md:flex-row md:justify-between md:items-center gap-6 ${styles.bgSecondary} px-4 py-6 md:py-4 md:px-10  md:rounded-3xl w-full`}
       >
         {/* Search input */}
-        <div className={`relative md:order-2 w-full md:w-1/3 px-4 md:px-0`}>
+        <div className={`relative md:order-2 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}>
           <input
             type="text"
             placeholder="Search"
@@ -120,7 +120,7 @@ export function CategoryFilterTabs({ setTab }) {
           <TabsTrigger
             key={category.value}
             value={category.value}
-            className={`data-[state=active]:bg-[#d4dbc9] data-[state=active]:text-[#5FA7A7] data-[state=active]:shadow-md hover:bg-[#609e9e] hover:text-[#8EACCD] text-[#b2d4d4] hover:cursor-pointer hover:shadow-sm hover:shadow-[#8EACCD] hover:-translate-y-0.5 transition-transform duration-300 px-4 py-2 text-sm font-bold rounded-2xl`}
+            className={`data-[state=active]:bg-[#d4dbc9] data-[state=active]:text-[#5FA7A7] data-[state=active]:shadow-md hover:bg-[#609e9e] hover:text-[#8EACCD] text-[#b2d4d4] hover:cursor-pointer hover:scale-102 hover:shadow-sm hover:shadow-[#8EACCD] hover:-translate-y-0.5 transition-transform duration-300 px-4 py-2 text-sm font-bold rounded-2xl`}
           >
             {category.label}
           </TabsTrigger>
@@ -138,7 +138,7 @@ export function CategoryFilterSelect({ setTab }) {
   return (
     <select
       onChange={e}
-      className={`${styles.bgBackground} ${styles.borderSecondary} ${styles.textSecondary} text-sm rounded-2xl w-full h-12 px-5 focus:outline-none appearance-none cursor-pointer`}
+      className={`${styles.bgBackground} ${styles.borderSecondary} ${styles.textSecondary} text-sm rounded-2xl w-full h-12 px-5 focus:outline-none appearance-none hover:cursor-pointer`}
     >
       {categories.map((category) => (
         <option key={category.value} value={category.value}>
