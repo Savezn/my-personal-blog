@@ -1,9 +1,206 @@
 @import "tailwindcss";
 
+:root {
+  /* Background */
+  --background-color: #f3d6c6; /* โทนอบอุ่น/พาสเทล */
+
+  /* ปรับสีใหม่โดยเลือกใช้สีที่เป็นโทนเย็น เพื่อสร้างความคอนทราสต์กับพื้นหลัง */
+  --primary-color:   #6AB7B7; /* สี Teal อ่อน ให้ความรู้สึกสดชื่นและทันสมัย */
+  --secondary-color: #5FA7A7; /* สี Teal มืดกว่าเล็กน้อย ใช้สำหรับเน้นปุ่มหรืออินเทอร์แอคทีฟ */
+  --tertiary-color:  #82C0BF; /* สี Teal อ่อนกว่าเล็กน้อย สำหรับองค์ประกอบรองหรือไฮไลท์ที่ต้องการความนุ่มนวล */
+  
+ /* Text Colors: เรียงจากอ่อนสุด (ใช้บนพื้นหลังเข้ม) ไปจนถึงเข้มสุด (ใช้บนพื้นหลังอ่อน) */
+  --text-color-50:  #F7F7F7;   /* ใช้ในส่วนที่ต้องการความเบาบาง เช่น placeholder หรือข้อความรองบนพื้นเข้ม */
+  --text-color-100: #E1E1E1;
+  --text-color-200: #CFCFCF;
+  --text-color-300: #B1B1B1;
+  --text-color-400: #9E9E9E;
+  --text-color-500: #7E7E7E;   /* ระดับกลางสำหรับข้อความรองหรือข้อความที่ไม่ต้องการคอนทราสต์สูงสุด */
+  --text-color-600: #626262;
+  --text-color-700: #515151;
+  --text-color-800: #3B3B3B;
+  --text-color-900: #222222;   /* ใช้สำหรับข้อความหลัก (heading, body) เพื่อความคอนทราสต์สูงบนพื้นหลังอ่อน */
+  
+  /* Accent Colors */
+  --accent-color: #FF6F61;        /* สี Accent แรก: คอนทราสต์สดใส ดึงดูดความสนใจ */
+  --accent-color-2: #F9A825;      /* สี Accent ที่สอง: โทนมัสตาร์ดให้ความอบอุ่นและพลังงาน */
+  --accent-color-3: #00B8D4;      /* สี Accent ที่สาม: สีฟ้าอมเขียวสดใส เพิ่มความสดชื่น */
+  --accent-color-4: #FFB74D;      /* สี Accent ที่สี่: โทนส้มอ่อน ช่วยสร้างความรู้สึกเป็นมิตร */
+  --accent-color-5: #8E24AA;      /* สี Accent ที่ห้า: สีม่วงเข้ม ให้ความรู้สึกมีความลึกซึ้งและน่าเชื่อถือ */
+
+  /* Other Colors */
+  --white: #FFFFFF;
+  --black: #000000;
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+.bg-tertiary {
+  background-color: var(--tertiary-color);
+}
+
+.bg-background {
+  background-color: var(--background-color);
+}
+
+.bg-accent {
+  background-color: var(--accent-color);
+}
+
+.bg-accent-2 {
+  background-color: var(--accent-color-2);
+} 
+
+.bg-accent-3 {  
+  background-color: var(--accent-color-3);
+}
+
+.bg-accent-4 {  
+  background-color: var(--accent-color-4);
+}
+
+.bg-accent-5 {
+  background-color: var(--accent-color-5);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.border-secondary {
+  border-color: var(--secondary-color);
+}
+
+.border-tertiary {
+  border-color: var(--tertiary-color);
+}
+
+.border-background {  
+  border-color: var(--background-color);
+}
+
+.border-accent {
+  border-color: var(--accent-color);
+}
+
+.border-accent-2 {
+  border-color: var(--accent-color-2);
+} 
+
+.border-accent-3 {  
+  border-color: var(--accent-color-3);
+}
+
+.border-accent-4 {  
+  border-color: var(--accent-color-4);
+}
+
+.border-accent-5 {  
+  border-color: var(--accent-color-5);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-tertiary {
+  color: var(--tertiary-color);
+}
+
+.text-background {
+  color: var(--background-color);
+}
+
+.text-50 {
+  color: var(--text-color-50);
+}
+
+.text-100 {
+  color: var(--text-color-100);
+}
+
+.text-200 {  
+  color: var(--text-color-200);
+}
+
+.text-300 {  
+  color: var(--text-color-300);
+}
+
+.text-400 {  
+  color: var(--text-color-400);
+}
+
+.text-500 {  
+  color: var(--text-color-500);
+}
+
+.text-600 {  
+  color: var(--text-color-600);
+}
+
+.text-700 {  
+  color: var(--text-color-700);
+}
+
+.text-800 {  
+  color: var(--text-color-800);
+}
+
+.text-900 {  
+  color: var(--text-color-900);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.text-accent-2 {
+  color: var(--accent-color-2);
+}
+
+.text-accent-3 {
+  color: var(--accent-color-3);
+}
+
+.text-accent-4 {
+  color: var(--accent-color-4);
+}
+
+.text-accent-5 {
+  color: var(--accent-color-5);
+}
+
+.placeholder-primary::-webkit-input-placeholder {
+  color: var(--primary-color);
+}
+
+.placeholder-secondary::-webkit-input-placeholder {
+  color: var(--secondary-color);
+}
+
+.placeholder-tertiary::-webkit-input-placeholder { 
+  color: var(--tertiary-color);
+}
+
+.placeholder-background::-webkit-input-placeholder {
+  color: var(--background-color);
+}
+
 .exceeds-2-lines {
-  display: -webkit-box;          /* ตั้งค่า display เป็นแบบ WebKit box สำหรับรองรับ -webkit-line-clamp */
-  -webkit-box-orient: vertical;  /* กำหนดทิศทางของ box เป็นแนวตั้ง */
-  -webkit-line-clamp: 2;         /* จำกัดบรรทัดด้วย WebKit property */
-  line-clamp: 2;                 /* ระบุ standard property (สำหรับอนาคตเมื่อรองรับมากขึ้น) */
-  overflow: hidden;             /* ซ่อนข้อความที่เกิน */
+  display: -webkit-box; /* ตั้งค่า display เป็นแบบ WebKit box สำหรับรองรับ -webkit-line-clamp */
+  -webkit-box-orient: vertical; /* กำหนดทิศทางของ box เป็นแนวตั้ง */
+  -webkit-line-clamp: 2; /* จำกัดบรรทัดด้วย WebKit property */
+  line-clamp: 2; /* ระบุ standard property (สำหรับอนาคตเมื่อรองรับมากขึ้น) */
+  overflow: hidden; /* ซ่อนข้อความที่เกิน */
 }
