@@ -1,15 +1,27 @@
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import NavBar from "@/components/NavBar";
 import axios from "axios";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
+import AuthRequiredModal from "@/components/AuthRequiredModal";
+import "boxicons";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 const ViewPostPage = () => {
   // declare state for storing data
   const [post, setPost] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  // decalare state for storing comment
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+
+  // declare state for authentication
+  // eslint-disable-next-line no-unused-vars
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showAuthRequiredModal, setShowAuthRequiredModal] = useState(false);
 
   // fetch data on page load
   useEffect(() => {
@@ -45,10 +57,88 @@ const ViewPostPage = () => {
     }
   };
 
-  // fetch data on comment change
-  useEffect(() => {
-    fetchPost();
-  }, [comments]);
+  // function to handle like
+  const handleLike = () => {
+    if (isLoggedIn) {
+      setPost({ ...post, likes: post.likes + 1 });
+      // send like to API
+    } else {
+      setShowAuthRequiredModal(true);
+    }
+  };
+
+  // function to handle comment
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    if (isLoggedIn) {
+      const newCommentObject = {
+        id: Date.now(),
+        comment: newComment,
+      };
+      setComments([...comments, newCommentObject]);
+      setNewComment(""); // clear input
+      // send comment to API
+    } else {
+      setShowAuthRequiredModal(true);
+    }
+  };
+
+  // declare state for closing auth required modal
+  const closeAuthRequiredModal = () => {
+    setShowAuthRequiredModal(false);
+  };
+
+  // function to handle create account click
+  const handleCreateAccountClick = () => {
+    // navigate user to create account page
+    console.log("go to create account page");
+    setShowAuthRequiredModal(false);
+  };
+
+  // function to handle login click
+  const handleLoginClick = () => {
+    // navigate user to login page
+    console.log("go to login page");
+    setShowAuthRequiredModal(false);
+  };
+
+  // function to handle share on social media
+  const handleShare = (platform) => {
+    // generate share URL
+    let shareUrl = "";
+
+    // Get the current URL
+    const currentUrl = window.location.href;
+
+    // Get the post title
+    const title = post.title || "Check out this blog post!"; // Default title
+
+    // Generate the share URL based on the selected platform
+    switch (platform) {
+      case "facebook":
+        shareUrl = `https://www.facebook.com/share.php?u=${encodeURIComponent(
+          currentUrl
+        )}`;
+        break;
+      case "linkedin":
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          currentUrl
+        )}`;
+        break;
+      case "twitter":
+        shareUrl = `https://twitter.com/share?url=${encodeURIComponent(
+          currentUrl
+        )}&text=${encodeURIComponent(title)}`;
+        break;
+      default:
+        break;
+    }
+
+    // open share URL in new tab
+    if (shareUrl) {
+      window.open(shareUrl, "_blank");
+    }
+  };
 
   // declare styles
   const styles = {
@@ -99,7 +189,6 @@ const ViewPostPage = () => {
     // return JSX
     <div className="flex flex-col items-center min-h-screen bg-background text-text font-sans mx-auto m-0 p-0 max-w-full">
       <NavBar />
-
       {/* conditional rendering */}
       {loading ? (
         <p className="text-2xl">Loading...</p>
@@ -107,7 +196,6 @@ const ViewPostPage = () => {
         <p className="text-2xl">Error</p>
       ) : (
         <div className="flex flex-col items-center min-h-screen bg-background text-text font-sans mx-auto m-0 p-0 max-w-full">
-          
           {/* post details */}
           <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
           <img
@@ -120,54 +208,122 @@ const ViewPostPage = () => {
           <p className="text-lg mb-4">Date: {post.date}</p>
           <p className="text-lg mb-4">{post.description}</p>
           <div>{post.likes}</div>
-
           {/* markdown content */}
           <div className="markdown">
             <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
-
-          {/* comments section */}
-          <h2 className="text-2xl font-bold mb-4">Comments</h2>
-
-          {/* comment list */}
-          {comments?.map((comment) => (
-            <div key={comment.id} className="mb-4">
-              <p className="text-lg">{comment.comment}</p>
-            </div>
-          ))}
-
-          {/* comment form */}
-          {/* when form is submitted, add new comment */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const newComment = {
-                id: Date.now(),
-                comment: newComment,
-              };
-              setComments([...comments, newComment]); // add new comment
-              setNewComment(""); // clear input
+          {/* like button */}.
+          <button
+            className={`bg-primary text-white px-4 py-2 rounded-md mt-4 hover:bg-secondary hover:cursor-pointer ${
+              !isLoggedIn ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => {
+              handleLike();
             }}
           >
-            {/* input field */}
-            <input
-              type="text"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Add a comment..."
-              className={`w-full border ${styles.borderSecondary} rounded-md p-2 mb-4 ${styles.bgBackground} ${styles.textSecondary}`}
-            />
-
-            {/* submit button */}
+            🙂 <span>{post.likes}</span>
+          </button>
+          {/* share section */}
+          <div className="flex items-center mt-4">
+            {/* copy link button */}
+            <Toaster />
             <button
-              type="submit"
-              className={`bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition duration-300 ease-in-out`}
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary hover:cursor-pointer"
+              onClick={() => {
+                // copy link
+                toast.message("Copied!", {
+                  description:
+                    "This article has been copied to your clipboard.",
+                });
+                navigator.clipboard.writeText(window.location.href);
+              }}
             >
-              Send
+              Copy Link
             </button>
-          </form>
+
+            {/* share button */}
+            <div className="flex items-center ml-4">
+              {/* facebook */}
+              <box-icon
+                type="logo"
+                name="facebook-circle"
+                size="md"
+                color="#5FA7A7"
+                className="mr-2 hover:cursor-pointer"
+                onClick={() => handleShare("facebook")}
+              ></box-icon>
+
+              {/* linkedin */}
+              <box-icon
+                name="linkedin"
+                type="logo"
+                size="sm"
+                color="#5FA7A7"
+                className="mr-2 hover:cursor-pointer"
+                onClick={() => handleShare("linkedin")}
+              ></box-icon>
+
+              {/* twitter */}
+              <box-icon
+                name="twitter"
+                type="logo"
+                size="md"
+                color="#5FA7A7"
+                className="mr-2 hover:cursor-pointer"
+                onClick={() => handleShare("twitter")}
+              ></box-icon>
+            </div>
+          </div>
+          {/* comments section */}
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Comments</h2>
+
+            {/* comment list */}
+            {comments?.map((comment) => (
+              <div key={comment.id} className="mb-4">
+                <p className="text-lg">{comment.comment}</p>
+              </div>
+            ))}
+
+            {/* comment form */}
+            {/* when form is submitted, add new comment */}
+            <form
+              onSubmit={(e) => {
+                handleSubmitComment(e);
+              }}
+            >
+              {/* input field */}
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="What are your thoughts?"
+                className={`w-full border ${styles.borderSecondary} rounded-md p-2 mb-4 ${styles.bgBackground} ${styles.textSecondary}`}
+              />
+
+              {/* submit button */}
+              <button
+                type="submit"
+                className={`bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition duration-300 ease-in-out ${
+                  !isLoggedIn ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                Send
+              </button>
+            </form>
+          </div>
         </div>
       )}
+
+      {/* show auth required modal when showAuthRequiredModal is true */}
+      {showAuthRequiredModal && (
+        <AuthRequiredModal
+          onClose={closeAuthRequiredModal}
+          onCreateAccount={handleCreateAccountClick}
+          onLogin={handleLoginClick}
+        />
+      )}
+      <Footer />
     </div>
   );
 };
