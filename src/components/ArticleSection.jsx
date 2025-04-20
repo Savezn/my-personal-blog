@@ -59,13 +59,50 @@ const styles = {
 
 // ArticleSection component
 export function ArticleSection() {
-  // declare state
+  // declare state for selected tab
   const [selectedTab, setSelectedTab] = useState("Highlight");
+
+  // declare state for search input
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // function to handle tab click event
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
+
+  // useEffect to fetch suggestions
+  useEffect(() => {
+    if (!searchTerm) {
+      setSuggestions([]);
+      return;
+    }
+    
+    const fetchSuggestions = async () => {
+      try {
+        const res = await axios.get(
+          "https://blog-post-project-api.vercel.app/posts"
+        );
+        const allPosts = res.data.posts || [];
+
+        // Filter posts based on whether the search term matches the title or description
+        const filteredSuggestions = allPosts.filter((post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.description.toLowerCase().includes(searchTerm.toLowerCase())
+        ).slice(0, 5); // Limit to 5 suggestions
+
+        setSuggestions(filteredSuggestions);
+        setShowSuggestions(filteredSuggestions.length > 0); // Show only if there are suggestions
+      } catch (error) {
+        console.error(error);
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    };
+    fetchSuggestions();
+  }, [searchTerm]);
+
 
   return (
     <section className={`flex flex-col gap-4 md:gap-6 w-full md:px-14 py-5`}>
@@ -75,20 +112,35 @@ export function ArticleSection() {
       <div
         className={`flex flex-col md:flex-row md:justify-between md:items-center gap-6 ${styles.bgSecondary} px-4 py-6 md:py-4 md:px-10  md:rounded-3xl w-full`}
       >
-        {/* Search input */}
-        <div
-          className={`relative md:order-2 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}
-        >
+        {/* Search Input */}
+        <div className={`relative md:order-2 z-50 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}>
           <input
             type="text"
             placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className={`${styles.textSecondary} ${styles.bgBackground} ${styles.borderSecondary} ${styles.placeholderSecondary} text-sm pl-5 w-full h-12 md:h-10 rounded-2xl px-10 py-3 pr-12 focus:outline-none`}
           />
-          <div
-            className={`absolute right-8 md:right-4 top-1/2 transform -translate-y-2/5`}
-          >
-            <box-icon name="search-alt-2" color="#8EACCD"></box-icon>
+
+          {/* Search Icon */}
+          <div className={`absolute right-8 md:right-4 top-1/2 transform -translate-y-2/5`}>
+            <box-icon name="search-alt-2" color={styles.iconPrimary}></box-icon>
           </div>
+
+          {/* Suggestions Dropdown */}
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="absolute left-0 right-0 bg-background border rounded-lg mt-2 shadow-lg max-h-60 overflow-y-auto scollbar-hide">
+              {suggestions.map((post) => (
+                <li
+                  key={post.id}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => window.location.href = `/post/${post.id}`}
+                >
+                  {post.title}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Desktop Category List */}
