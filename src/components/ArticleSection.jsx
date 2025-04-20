@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import BlogCard from "./BlogCard";
-import 'boxicons';
+import "boxicons";
 
+// declare categories for filtering
 const categories = [
   { value: "Highlight", label: "Highlight" },
   { value: "Cat", label: "Cat" },
@@ -11,6 +12,7 @@ const categories = [
   { value: "General", label: "General" },
 ];
 
+// declare styles from index.css
 const styles = {
   bgPrimary: "bg-primary",
   bgSecondary: "bg-secondary",
@@ -55,9 +57,12 @@ const styles = {
   iconPrimary: "#5FA7A7",
 };
 
+// ArticleSection component
 export function ArticleSection() {
+  // declare state
   const [selectedTab, setSelectedTab] = useState("Highlight");
 
+  // function to handle tab click event
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
@@ -71,7 +76,9 @@ export function ArticleSection() {
         className={`flex flex-col md:flex-row md:justify-between md:items-center gap-6 ${styles.bgSecondary} px-4 py-6 md:py-4 md:px-10  md:rounded-3xl w-full`}
       >
         {/* Search input */}
-        <div className={`relative md:order-2 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}>
+        <div
+          className={`relative md:order-2 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}
+        >
           <input
             type="text"
             placeholder="Search"
@@ -110,8 +117,10 @@ export function ArticleSection() {
   );
 }
 
+// CategoryFilterTabs component for desktop view
 export function CategoryFilterTabs({ setTab }) {
   return (
+    // Tabs component from Radix UI
     <Tabs defaultValue="Highlight" onValueChange={setTab} className="w-full">
       <TabsList
         className={`flex justify-around items-center gap-2 w-full h-12 ${styles.bgSecondary} rounded-2xl`}
@@ -130,16 +139,20 @@ export function CategoryFilterTabs({ setTab }) {
   );
 }
 
+// CategoryFilterSelect component for mobile view
 export function CategoryFilterSelect({ setTab }) {
+  // function to handle tab click event
   const e = (e) => {
     setTab(e.target.value);
   };
 
   return (
+    // Select component
     <select
       onChange={e}
       className={`${styles.bgBackground} ${styles.borderSecondary} ${styles.textSecondary} text-sm rounded-2xl w-full h-12 px-5 focus:outline-none appearance-none hover:cursor-pointer`}
     >
+      {/* Options */}
       {categories.map((category) => (
         <option key={category.value} value={category.value}>
           {category.label}
@@ -149,35 +162,42 @@ export function CategoryFilterSelect({ setTab }) {
   );
 }
 
+// BlogCardArticle component
 export function BlogCardArticle({ activeTab, ...props }) {
+  // declare state
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  // function to handle tab click event
   const handleLoadMore = () => {
-    setPage((prevPage) => prevPage + 1); // เพิ่มหมายเลขหน้าเพื่อโหลดข้อมูลเพิ่ม
+    setPage((prevPage) => prevPage + 1); // increment page
   };
 
-  // ฟังก์ชันดึงข้อมูลที่จะถูกเรียกเมื่อ page หรือ activeTab เปลี่ยนแปลง
+  // function to fetch posts when page or activeTab changes
   useEffect(() => {
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, activeTab]);
 
+  // function to reset posts when activeTab changes
   useEffect(() => {
     setPosts([]);
     setPage(1);
   }, [activeTab]);
 
+  // function to fetch posts
   const fetchPosts = async () => {
     try {
+      // define category parameter
       const categoryParam = activeTab === "Highlight" ? "" : activeTab;
 
+      // set loading state
       setIsLoading(true);
 
-      // ดึงโพสต์จาก API
+      // fetch data
       const response = await axios.get(
         "https://blog-post-project-api.vercel.app/posts",
         {
@@ -189,28 +209,32 @@ export function BlogCardArticle({ activeTab, ...props }) {
         }
       );
 
-      // ถ้า page เป็น 1 ให้แทนที่โพสต์เดิมด้วยโพสต์ใหม่
+      // if page is 1, replace existing posts with new posts
       if (page === 1) {
         setPosts(response.data.posts);
       } else {
-        // ถ้า page > 1 ให้รวมโพสต์ใหม่เข้ากับโพสต์เดิม
+        // if page is not 1, append new posts to existing posts
         setPosts((prevPosts) => [...prevPosts, ...response.data.posts]);
       }
 
-      // ตรวจสอบว่าได้ข้อมูลหน้าสุดท้ายแล้วหรือยัง
+      // check if there are more posts
       if (response.data.currentPage >= response.data.totalPages) {
         setHasMore(false);
       }
 
+      // set error state
       setIsError(false);
     } catch (error) {
+      // handle error
       console.error("Error fetching posts:", error);
       setIsError(true);
     } finally {
+      // set loading state
       setIsLoading(false);
     }
   };
 
+  // function to format date
   const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "long", year: "numeric" };
     return new Date(dateString).toLocaleDateString("en-GB", options);
@@ -219,6 +243,7 @@ export function BlogCardArticle({ activeTab, ...props }) {
   return (
     <>
       <div className={props.className}>
+        {/* Render Blog cards */}
         {posts
           .filter((post) =>
             activeTab === "Highlight" ? true : post.category === activeTab
@@ -236,20 +261,37 @@ export function BlogCardArticle({ activeTab, ...props }) {
             />
           ))}
       </div>
-        {isLoading && <div className={`w-full flex flex-col justify-center items-center my-40`}><box-icon name='loader-alt' color='#6AB7B7' size='lg' animation='spin' ></box-icon>
-          <p className={`text-center text-lg ${styles.textSecondary}`}>Loading...</p></div>}
-        {isError && <p>Error</p>}
-        {hasMore && (
-          <div className={`w-full flex justify-center items-center my-8`}>
-            <button
-              onClick={handleLoadMore}
-              className={`font-medium text-lg underline ${styles.textSecondary} hover:cursor-pointer transform transition duration-300 ease-in-out hover:scale-105`}
-            >
-              View more
-            </button>
-          </div>
-        )}
-    </>
+      {/* Loading indicator */}
+      {isLoading && (
+        <div
+          className={`w-full flex flex-col justify-center items-center my-40`}
+        >
+          <box-icon
+            name="loader-alt"
+            color="#6AB7B7"
+            size="lg"
+            animation="spin"
+          ></box-icon>
+          <p className={`text-center text-lg ${styles.textSecondary}`}>
+            Loading...
+          </p>
+        </div>
+      )}
 
+      {/* Error message */}
+      {isError && <p>Error</p>}
+
+      {/* View more button */}
+      {hasMore && (
+        <div className={`w-full flex justify-center items-center my-8`}>
+          <button
+            onClick={handleLoadMore}
+            className={`font-medium text-lg underline ${styles.textSecondary} hover:cursor-pointer transform transition duration-300 ease-in-out hover:scale-105`}
+          >
+            View more
+          </button>
+        </div>
+      )}
+    </>
   );
 }

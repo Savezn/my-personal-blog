@@ -1,4 +1,5 @@
 function Footer() {
+  // declare styles from index.css
   const styles = {
     bgPrimary: "bg-primary",
     bgSecondary: "bg-secondary",
