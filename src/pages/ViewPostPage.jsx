@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import NavBar from "@/components/NavBar";
 import axios from "axios";
-import "boxicons";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import AuthRequiredModal from "@/components/AuthRequiredModal";
+import "boxicons";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
@@ -322,6 +323,7 @@ const ViewPostPage = () => {
           onLogin={handleLoginClick}
         />
       )}
+      <Footer />
     </div>
   );
 };
