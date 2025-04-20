@@ -1,7 +1,8 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../index.css";
 import { Button } from "./ui/button";
 import "boxicons";
-import { useState } from "react";
 
 export function ButtonDemo({ name, className }) {
   return <Button className={className}>{name}</Button>;
@@ -18,6 +19,8 @@ export function ButtonOutline({ name, className }) {
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const navigate = useNavigate();
+  
   const styles = {
     bgPrimary: "bg-primary",
     bgSecondary: "bg-secondary",
@@ -65,7 +68,7 @@ function NavBar() {
   return (
     <nav className={`sticky top-0 flex flex-row items-center justify-between border-b ${styles.bgBackground} ${styles.borderPrimary} shadow-sm px-8 md:px-14 py-4 w-full z-50 mx-4`}>
       {/* Logo */}
-      <div className={`text-2xl font-bold`}><span className={`${styles.textSecondary} hover:cursor-pointer hover:shadow-[#8EACCD]`}>LOGO</span></div>
+      <div className={`text-2xl font-bold`} onClick={() => navigate("/")}><span className={`${styles.textSecondary} hover:cursor-pointer hover:shadow-[#8EACCD]`}>LOGO</span></div>
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex flex-row gap-4">

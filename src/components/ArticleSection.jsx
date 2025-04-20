@@ -225,8 +225,8 @@ export function BlogCardArticle({ activeTab, ...props }) {
           )
           .map((post, index) => (
             <BlogCard
-              key={index}
-              productId={index}
+              key={index} // for unique key
+              postId={post.id} // use post.id for navigation to the specific post
               image={post.image}
               category={post.category}
               topic={post.title}
