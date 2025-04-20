@@ -4,7 +4,7 @@ import NavBar from "@/components/NavBar";
 import axios from "axios";
 import "boxicons";
 import AuthRequiredModal from "@/components/AuthRequiredModal";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
 const ViewPostPage = () => {
@@ -20,7 +20,7 @@ const ViewPostPage = () => {
   // declare state for authentication
   // eslint-disable-next-line no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showAuthRequiredModal, setShowAuthRequiredModal] = useState(true);
+  const [showAuthRequiredModal, setShowAuthRequiredModal] = useState(false);
 
   // fetch data on page load
   useEffect(() => {
@@ -82,7 +82,6 @@ const ViewPostPage = () => {
     }
   };
 
-
   // declare state for closing auth required modal
   const closeAuthRequiredModal = () => {
     setShowAuthRequiredModal(false);
@@ -100,6 +99,44 @@ const ViewPostPage = () => {
     // navigate user to login page
     console.log("go to login page");
     setShowAuthRequiredModal(false);
+  };
+
+  // function to handle share on social media
+  const handleShare = (platform) => {
+    // generate share URL
+    let shareUrl = "";
+
+    // Get the current URL
+    const currentUrl = window.location.href;
+
+    // Get the post title
+    const title = post.title || "Check out this blog post!"; // Default title
+
+    // Generate the share URL based on the selected platform
+    switch (platform) {
+      case "facebook":
+        shareUrl = `https://www.facebook.com/share.php?u=${encodeURIComponent(
+          currentUrl
+        )}`;
+        break;
+      case "linkedin":
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          currentUrl
+        )}`;
+        break;
+      case "twitter":
+        shareUrl = `https://twitter.com/share?url=${encodeURIComponent(
+          currentUrl
+        )}&text=${encodeURIComponent(title)}`;
+        break;
+      default:
+        break;
+    }
+
+    // open share URL in new tab
+    if (shareUrl) {
+      window.open(shareUrl, "_blank");
+    }
   };
 
   // declare styles
@@ -194,9 +231,9 @@ const ViewPostPage = () => {
               onClick={() => {
                 // copy link
                 toast.message("Copied!", {
-                  description: "This article has been copied to your clipboard.",
-                  }
-                );
+                  description:
+                    "This article has been copied to your clipboard.",
+                });
                 navigator.clipboard.writeText(window.location.href);
               }}
             >
@@ -212,6 +249,7 @@ const ViewPostPage = () => {
                 size="md"
                 color="#5FA7A7"
                 className="mr-2 hover:cursor-pointer"
+                onClick={() => handleShare("facebook")}
               ></box-icon>
 
               {/* linkedin */}
@@ -221,6 +259,7 @@ const ViewPostPage = () => {
                 size="sm"
                 color="#5FA7A7"
                 className="mr-2 hover:cursor-pointer"
+                onClick={() => handleShare("linkedin")}
               ></box-icon>
 
               {/* twitter */}
@@ -230,6 +269,7 @@ const ViewPostPage = () => {
                 size="md"
                 color="#5FA7A7"
                 className="mr-2 hover:cursor-pointer"
+                onClick={() => handleShare("twitter")}
               ></box-icon>
             </div>
           </div>
