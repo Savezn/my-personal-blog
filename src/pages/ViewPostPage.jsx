@@ -4,6 +4,8 @@ import NavBar from "@/components/NavBar";
 import axios from "axios";
 import "boxicons";
 import AuthRequiredModal from "@/components/AuthRequiredModal";
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner";
 
 const ViewPostPage = () => {
   // declare state for storing data
@@ -16,6 +18,7 @@ const ViewPostPage = () => {
   const [newComment, setNewComment] = useState("");
 
   // declare state for authentication
+  // eslint-disable-next-line no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showAuthRequiredModal, setShowAuthRequiredModal] = useState(true);
 
@@ -185,11 +188,16 @@ const ViewPostPage = () => {
           {/* share section */}
           <div className="flex items-center mt-4">
             {/* copy link button */}
+            <Toaster />
             <button
               className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary hover:cursor-pointer"
               onClick={() => {
+                // copy link
+                toast.message("Copied!", {
+                  description: "This article has been copied to your clipboard.",
+                  }
+                );
                 navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard!");
               }}
             >
               Copy Link
