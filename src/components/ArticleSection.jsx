@@ -78,7 +78,7 @@ export function ArticleSection() {
       setSuggestions([]);
       return;
     }
-    
+
     const fetchSuggestions = async () => {
       try {
         const res = await axios.get(
@@ -87,10 +87,13 @@ export function ArticleSection() {
         const allPosts = res.data.posts || [];
 
         // Filter posts based on whether the search term matches the title or description
-        const filteredSuggestions = allPosts.filter((post) =>
-          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.description.toLowerCase().includes(searchTerm.toLowerCase())
-        ).slice(0, 5); // Limit to 5 suggestions
+        const filteredSuggestions = allPosts
+          .filter(
+            (post) =>
+              post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              post.description.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .slice(0, 5); // Limit to 5 suggestions
 
         setSuggestions(filteredSuggestions);
         setShowSuggestions(filteredSuggestions.length > 0); // Show only if there are suggestions
@@ -103,7 +106,6 @@ export function ArticleSection() {
     fetchSuggestions();
   }, [searchTerm]);
 
-
   return (
     <section className={`flex flex-col gap-4 md:gap-6 w-full md:px-14 py-5`}>
       <h2 className={`text-2xl ${styles.textSecondary} font-bold pl-4`}>
@@ -113,7 +115,9 @@ export function ArticleSection() {
         className={`flex flex-col md:flex-row md:justify-between md:items-center gap-6 ${styles.bgSecondary} px-4 py-6 md:py-4 md:px-10  md:rounded-3xl w-full`}
       >
         {/* Search Input */}
-        <div className={`relative md:order-2 z-50 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}>
+        <div
+          className={`relative md:order-2 z-50 w-full md:w-1/3 px-4 md:px-0 hover:shadow-lg rounded-2xl transform hover:scale-101 transition duration-300 ease-in-out`}
+        >
           <input
             type="text"
             placeholder="Search"
@@ -123,7 +127,9 @@ export function ArticleSection() {
           />
 
           {/* Search Icon */}
-          <div className={`absolute right-8 md:right-4 top-1/2 transform -translate-y-2/5`}>
+          <div
+            className={`absolute right-8 md:right-4 top-1/2 transform -translate-y-2/5`}
+          >
             <box-icon name="search-alt-2" color={styles.iconPrimary}></box-icon>
           </div>
 
@@ -134,7 +140,7 @@ export function ArticleSection() {
                 <li
                   key={post.id}
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => window.location.href = `/post/${post.id}`}
+                  onClick={() => (window.location.href = `/post/${post.id}`)}
                 >
                   {post.title}
                 </li>
@@ -306,7 +312,7 @@ export function BlogCardArticle({ activeTab, ...props }) {
               postId={post.id} // use post.id for navigation to the specific post
               image={post.image}
               category={post.category}
-              topic={post.title}
+              title={post.title}
               description={post.description}
               author={post.author}
               date={formatDate(post.date)}
