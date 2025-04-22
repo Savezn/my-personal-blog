@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+
+// declare styles from index.css
 const styles = {
   bgPrimary: "bg-primary",
   bgSecondary: "bg-secondary",
@@ -42,11 +45,30 @@ const styles = {
   iconPrimary: "#5FA7A7",
 };
 
-function BlogCard({ index, image, category, title, description, author, date }) {
+// function to render blog card
+function BlogCard({
+  index,
+  postId,
+  image,
+  category,
+  title,
+  description,
+  author,
+  date,
+}) {
+
+  // declare navigator
+  const navigator = useNavigate();
+
   return (
+    // blog card component
     <div
       className={`flex flex-col gap-4 md:gap-6 rounded-xl w-full bg-[#c0c3bd] shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-4 py-6 md:px-10 md:py-6 hover:cursor-pointer transform transition duration-300 ease-in-out hover:scale-101 hover:shadow-lg hover:shadow-[#a89489] hover:-translate-y-0.5`}
       key={index}
+      onClick={(e) => {
+        e.preventDefault();
+        navigator(`/post/${postId}`);
+      }}
     >
       <a href="#" className={`relative h-[212px] sm:h-[360px]`}>
         <img
