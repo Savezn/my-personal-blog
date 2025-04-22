@@ -1,9 +1,9 @@
-import * as pg from "pg";
-const { Pool } = pg.default;
+import pkg from "pg";
+const { Pool } = pkg;
 
 // declare db connection pool
 const connectionPool = new Pool({
-  connectionString: "postgres://postgres:postgres@localhost:5432/Personal Blog",
+  connectionString: "postgresql://postgres:postgres@localhost:5432/Personal Blog",
 })
 
 export default connectionPool;
