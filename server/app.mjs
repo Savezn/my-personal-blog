@@ -169,6 +169,32 @@ app.put("/posts/:postId", async (req, res) => {
   }
 });
 
+// delete route for delete post
+app.delete("/posts/:postId", async (req, res) => {
+  try {
+    // access request params
+    const postId = req.params.postId;
+
+    // delete post from database
+    const response = await connectionPool.query(
+      "DELETE FROM posts WHERE id = $1",
+      [postId]
+    );
+
+    // check if post is not found
+    if (response.rowCount === 0) {
+      return res.status(404).json({ message: "Server could not find a requested post to delete" });
+    }
+
+    // return response
+    return res.status(200).json({ message: "Deleted post successfully" });
+  } catch (error) {
+    // return error response
+    console.log(error);
+    return res.status(500).json({ message: "Server could not delete post because database connection", error: error.message });
+  }
+});
+
 // test connection to database
 const testConnection = async () => {
   await connectionPool.connect((err, client, release) => {
