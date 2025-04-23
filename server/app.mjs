@@ -37,8 +37,6 @@ app.get("/profiles", (req, res) => {
 // posts route for post blog
 app.post("/posts", async (req, res) => {
     try {
-      console.log("🟢 Server API is working");
-      
       // access request body
       const newPost = {
         ...req.body,
@@ -89,6 +87,32 @@ app.post("/posts", async (req, res) => {
       return res.status(500).json({ message: "Server could not create post because database connection", error: error.message });
     }
   });
+
+// get route for get specific post
+app.get("/posts/:postId", async (req, res) => {
+  try {
+    // access request params
+    const postId = req.params.postId;
+
+    // get post from database
+    const response = await connectionPool.query(
+      "SELECT * FROM posts WHERE id = $1",
+      [postId]
+    );
+
+    // check if post is not found
+    if (response.rows.length === 0) {
+      return res.status(404).json({ message: "Server could not find a requested post" });
+    }
+
+    // return response
+    return res.status(200).json(response.rows[0]);
+  } catch (error) {
+    // return error response
+    console.log(error);
+    return res.status(500).json({ message: "Server could not read post because database connection", error: error.message });
+  }
+});
 
 // test connection to database
 const testConnection = async () => {
