@@ -114,6 +114,61 @@ app.get("/posts/:postId", async (req, res) => {
   }
 });
 
+// put route for update post
+app.put("/posts/:postId", async (req, res) => {
+  try {
+    // access request params
+    const postId = req.params.postId;
+
+    // check if all required fields are present
+    if (
+      !req.body.title ||
+      !req.body.image ||
+      !req.body.category_id ||
+      !req.body.description ||
+      !req.body.content ||
+      !req.body.status_id
+    ) {
+      return res
+        .status(400) 
+        .json({ message: "Server could not update post because there are missing data from client" });
+    }
+
+    // access request body
+    const updatedPost = {
+      ...req.body,
+      date: new Date(),
+    };
+
+    // update post in database
+    const response = await connectionPool.query(
+      "UPDATE posts SET title = $1, image = $2, category_id = $3, description = $4, content = $5, status_id = $6, date = $7 WHERE id = $8",
+      [
+        updatedPost.title,
+        updatedPost.image,
+        updatedPost.category_id,
+        updatedPost.description,
+        updatedPost.content,
+        updatedPost.status_id,
+        updatedPost.date,
+        postId,
+      ]
+    );
+
+    // check if post is not found
+    if (response.rowCount === 0) {
+      return res.status(404).json({ message: "Server could not find a requested post to update" });
+    }
+
+    // return response
+    return res.status(200).json({ message: "Updated post successfully" });
+  } catch (error) {
+    // return error response
+    console.log(error);
+    return res.status(500).json({ message: "Server could not update post because database connection", error: error.message });
+  }
+});
+
 // test connection to database
 const testConnection = async () => {
   await connectionPool.connect((err, client, release) => {
