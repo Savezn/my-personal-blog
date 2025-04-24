@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import connectionPool from "./utils/db.mjs"; // import db connection
 import morgan from "morgan";
+import { validatePost } from "./middlewares/post.validation.mjs";
 
 // create express app
 const app = express();
@@ -35,43 +36,13 @@ app.get("/profiles", (req, res) => {
 });
 
 // posts route for post blog
-app.post("/posts", async (req, res) => {
+app.post("/posts", [validatePost], async (req, res) => {
   try {
     // access request body
     const newPost = {
       ...req.body,
       date: new Date(),
     };
-
-    // check if all required fields are present
-    if (
-      !newPost.title ||
-      !newPost.image ||
-      !newPost.category_id ||
-      !newPost.description ||
-      !newPost.content ||
-      !newPost.status_id
-    ) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Server could not create post because there are missing data from client",
-        });
-    }
-
-    // check if category_id and status_id is valid (number data type)
-    if (
-      typeof newPost.category_id !== "number" ||
-      typeof newPost.status_id !== "number"
-    ) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Server could not create post because category_id and status_id must be number data type",
-        });
-    }
 
     // insert new post into database
     await connectionPool.query(
@@ -92,45 +63,10 @@ app.post("/posts", async (req, res) => {
   } catch (error) {
     // return error response
     console.log(error);
-    return res
-      .status(500)
-      .json({
-        message: "Server could not create post because database connection",
-        error: error.message,
-      });
-  }
-});
-
-// get route for get specific post
-app.get("/posts/:postId", async (req, res) => {
-  try {
-    // access request params
-    const postId = req.params.postId;
-
-    // get post from database
-    const response = await connectionPool.query(
-      "SELECT * FROM posts WHERE id = $1",
-      [postId]
-    );
-
-    // check if post is not found
-    if (response.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Server could not find a requested post" });
-    }
-
-    // return response
-    return res.status(200).json(response.rows[0]);
-  } catch (error) {
-    // return error response
-    console.log(error);
-    return res
-      .status(500)
-      .json({
-        message: "Server could not read post because database connection",
-        error: error.message,
-      });
+    return res.status(500).json({
+      message: "Server could not create post because database connection",
+      error: error.message,
+    });
   }
 });
 
@@ -178,28 +114,42 @@ app.get("/posts", async (req, res) => {
   }
 });
 
-// put route for update post
-app.put("/posts/:postId", async (req, res) => {
+// get route for get specific post
+app.get("/posts/:postId", async (req, res) => {
   try {
     // access request params
     const postId = req.params.postId;
 
-    // check if all required fields are present
-    if (
-      !req.body.title ||
-      !req.body.image ||
-      !req.body.category_id ||
-      !req.body.description ||
-      !req.body.content ||
-      !req.body.status_id
-    ) {
+    // get post from database
+    const response = await connectionPool.query(
+      "SELECT * FROM posts WHERE id = $1",
+      [postId]
+    );
+
+    // check if post is not found
+    if (response.rows.length === 0) {
       return res
-        .status(400)
-        .json({
-          message:
-            "Server could not update post because there are missing data from client",
-        });
+        .status(404)
+        .json({ message: "Server could not find a requested post" });
     }
+
+    // return response
+    return res.status(200).json(response.rows[0]);
+  } catch (error) {
+    // return error response
+    console.log(error);
+    return res.status(500).json({
+      message: "Server could not read post because database connection",
+      error: error.message,
+    });
+  }
+});
+
+// put route for update post
+app.put("/posts/:postId", [validatePost], async (req, res) => {
+  try {
+    // access request params
+    const postId = req.params.postId;
 
     // access request body
     const updatedPost = {
@@ -234,12 +184,10 @@ app.put("/posts/:postId", async (req, res) => {
   } catch (error) {
     // return error response
     console.log(error);
-    return res
-      .status(500)
-      .json({
-        message: "Server could not update post because database connection",
-        error: error.message,
-      });
+    return res.status(500).json({
+      message: "Server could not update post because database connection",
+      error: error.message,
+    });
   }
 });
 
@@ -267,12 +215,10 @@ app.delete("/posts/:postId", async (req, res) => {
   } catch (error) {
     // return error response
     console.log(error);
-    return res
-      .status(500)
-      .json({
-        message: "Server could not delete post because database connection",
-        error: error.message,
-      });
+    return res.status(500).json({
+      message: "Server could not delete post because database connection",
+      error: error.message,
+    });
   }
 });
 
